@@ -1,0 +1,10 @@
+eg2-dta.txt            DATA FILE NAME
+eg2-out.txt            OUTPUT FILE NAME
+5                NUMBER OF FIRMS
+1               NUMBER OF TIME PERIODS 
+1                NUMBER OF OUTPUTS
+1                NUMBER OF INPUTS
+0                0=INPUT AND 1=OUTPUT ORIENTATED
+1               0=CRS AND 1=VRS
+0               0=DEA(MULTI-STAGE), 1=COST-DEA, 2=MALMQUIST-DEA, 3=DEA(1-STAGE), 4=DEA(2-STAGE)
+

@@ -1,0 +1,106 @@
+ Results from DEAP Version 2.1
+ 
+Instruction file = eg4-ins.txt 
+Data file          = eg4-dta.txt 
+ 
+ Output orientated Malmquist DEA
+ 
+
+ DISTANCES SUMMARY
+
+
+ year =     1
+
+   firm      crs te rel to tech in yr      vrs
+    no.      ************************       te
+              t-1         t       t+1
+ 
+     1     0.000     0.500     0.375     1.000
+     2     0.000     0.500     0.375     0.545
+     3     0.000     1.000     0.750     1.000
+     4     0.000     0.800     0.600     0.923
+     5     0.000     0.833     0.625     1.000
+
+ mean      0.000     0.727     0.545     0.894
+
+ year =     2
+
+   firm      crs te rel to tech in yr      vrs
+    no.      ************************       te
+              t-1         t       t+1
+ 
+     1     0.500     0.375     0.375     1.000
+     2     0.750     0.563     0.563     0.667
+     3     1.333     1.000     1.000     1.000
+     4     0.600     0.450     0.450     0.600
+     5     1.000     0.750     0.750     1.000
+
+ mean      0.837     0.628     0.628     0.853
+
+ year =     3
+
+   firm      crs te rel to tech in yr      vrs
+    no.      ************************       te
+              t-1         t       t+1
+ 
+     1     0.375     0.375     0.000     1.000
+     2     0.563     0.563     0.000     0.667
+     3     1.000     1.000     0.000     1.000
+     4     0.450     0.450     0.000     0.600
+     5     0.750     0.750     0.000     1.000
+
+ mean      0.628     0.628     0.000     0.853
+ 
+ [Note that t-1 in year 1 and t+1 in the final year are not defined]
+
+
+ MALMQUIST INDEX SUMMARY
+
+ year =     2
+
+   firm   effch  techch    pech    sech   tfpch
+ 
+     1   0.750   1.333   1.000   0.750   1.000
+     2   1.125   1.333   1.222   0.920   1.500
+     3   1.000   1.333   1.000   1.000   1.333
+     4   0.562   1.333   0.650   0.865   0.750
+     5   0.900   1.333   1.000   0.900   1.200
+
+ mean    0.844   1.333   0.955   0.883   1.125
+
+ year =     3
+
+   firm   effch  techch    pech    sech   tfpch
+ 
+     1   1.000   1.000   1.000   1.000   1.000
+     2   1.000   1.000   1.000   1.000   1.000
+     3   1.000   1.000   1.000   1.000   1.000
+     4   1.000   1.000   1.000   1.000   1.000
+     5   1.000   1.000   1.000   1.000   1.000
+
+ mean    1.000   1.000   1.000   1.000   1.000
+
+
+ MALMQUIST INDEX SUMMARY OF ANNUAL MEANS
+
+   year   effch  techch    pech    sech   tfpch
+ 
+     2   0.844   1.333   0.955   0.883   1.125
+     3   1.000   1.000   1.000   1.000   1.000
+
+ mean    0.918   1.155   0.977   0.940   1.061
+
+
+ MALMQUIST INDEX SUMMARY OF FIRM MEANS
+
+   firm   effch  techch    pech    sech   tfpch
+ 
+     1   0.866   1.155   1.000   0.866   1.000
+     2   1.061   1.155   1.106   0.959   1.225
+     3   1.000   1.155   1.000   1.000   1.155
+     4   0.750   1.155   0.806   0.930   0.866
+     5   0.949   1.155   1.000   0.949   1.095
+
+ mean    0.918   1.155   0.977   0.940   1.061
+ 
+ [Note that all Malmquist index averages are geometric means]

@@ -1,0 +1,145 @@
+DEAP Version 2.1
+****************
+
+A DATA ENVELOPMENT ANALYSIS PROGRAM
+
+by
+Tim Coelli
+Centre for Efficiency and Productivity Analysis
+School of Economics
+University of New England
+Armidale, NSW, 2351
+Australia.
+email: tcoell@metz.une.edu.au
+Web: http://www.une.edu.au/febl/EconStud/emet/cepa.htm
+
+
+GETTING STARTED:
+
+1. Open the WINDOWS EXPLORER program on your PC.
+
+2. Create a new folder on your C: drive, for example called DEAP, by 
+using the File/New/Folder option.
+
+3. Copy ALL the files associated with DEAP into this folder, using
+the File/Copy option or by "drag-and-drop".
+
+4. If the files are stored in a DEAP.ZIP file, you will then need
+to unzip (extract) the files by double-clicking on the zip file and 
+extracting the contents of the zip file into the DEAP folder.
+
+
+FILES USED BY DEAP
+
+DEAP uses three files when it conducts an analysis.  These are:
+	- a data file (eg. eg1.dta)
+	- an instruction/command file (eg. eg1.cmd)
+	- an output file (eg. eg1.out)
+
+All of these files are text files.  They can be edited using many programs.
+For example, NOTEPAD, WORDPAD, WORD, WORD PERFECT, etc.  
+We suggest you use WORDPAD to view and edit these files.
+
+We suggest that you associate the file extensions ".dta", ".cmd" and ".out"
+with the WORDPAD editor.  
+To do this for the ".dta" file extension, double-click on a file which has 
+this extension (eg. eg1.dta).  You will then be asked to select a program
+to open this file with.  Select WORDPAD from the list and click "OK".  The 
+eg1.dta file will then be opened in WORDPAD for you to view or edit.
+Furthermore, from now on, whenever you double-click a ".dta" file, it will
+be opened in WORDPAD for you.
+
+You should repeat this process for ".cmd" and ".out" files.
+You only need to do this once - your computer will then store these settings.
+
+If you wish to change file association settings at a later date, you can use 
+the View/FolderOptions/FileTypes option in WINDOWS EXPLORER.
+
+To check that the file associations have worked you can double-click on
+eg1.dta, eg1.cmd and eg1.out to look at their contents.
+
+
+HOW TO RUN THE PROGRAM
+
+To practice running DEAP double-click on the DEAP.EXE file name.  
+The program will then ask for an instruction file name.  Type in 
+	eg1.cmd 
+(and hit the RETURN key).  DEAP will only take a few seconds to complete
+this small example.  To look at the output file (eg1.out) you then
+simply double-click on the eg1.out file name.   
+
+
+FILE NAMES IN DOS
+
+DEAP is a DOS computer program.  In DOS all file names must satisfy certain
+restrictions:
+	- no more than 12 characters
+	- no more than 3 characters after the period (".")
+	- no more than 8 characters before the period
+That is, the largest possible file name has the form:
+	XXXXXXXX.XXX
+The file extensions ".dta", ".cmd" and ".out" are chosen to help the user
+remember the contents of each file.  The user need not conform to these
+conventions.  For example, you could instead use a ".dat" extension for
+data files if you wished.
+
+Note that the ".ins" file extension was generally used for instruction/command
+files in CEPA software in the past.  However, we have decided to change to the 
+use of the ".cmd" file extension because WINDOWS 95 (and higher) have begun 
+using the ".ins" file extension on their internet settings files - so we have 
+changed to ".cmd" to avoid confusion.
+
+
+DATA FILE STRUCTURE
+
+All data, instruction and output files are text files.  In the data file
+the output columns are listed first followed by the input columns (left to
+right across the file).  If you are doing a cost eff DEA the input price 
+columns are listed to the right of these.  If you are doing Malmquist DEA
+all observations for year 1 are listed first, then those for year 2, and 
+so on down the file.  Note that there should be no column names in the 
+data file, only numbers.  For further details see the manual.
+
+
+CREATING A NEW INSTRUCTION/COMMAND FILE
+
+The easiest way to create a new instruction/command file is to open 
+an existing instruction/command file (eg. eg1.cmd) using WORDPAD and then save
+it under a new name (eg. abc2.cmd).  This is done by using the File/SaveAs
+option in WORDPAD.  Then you can edit the contents of this new file to suit
+your new analysis.
+
+
+CREATING DATA FILES USING EXCEL
+
+Many people store their data in Excel files.  To construct a text file from
+an Excel file, open the file in Excel and then use the File/SaveAs option in 
+Excel and save it as a text file.  However, be sure to remove any column names 
+first - the data file should only contain numbers.
+
+
+MANUAL
+
+        Coelli, T. (1996) 'A Guide to DEAP Version 2.1: A Data
+        Envelopment Analysis (Computer) Program', CEPA Working Paper 96/08,
+	  Centre for Efficiency and Productivity Analysis, University of New 
+	  England.
+
+A COPY OF THIS GUIDE IS PROVIDED IN THE FILE: DEAP.PDF.  
+
+For more on these DEA methods see Chapters 6, 7 and 10 in Coelli, 
+Rao and Battese (1998), An Introduction to Efficiency and Productivity Analysis, 
+Kluwer Academic Publishers, Boston.  
+
+
+LIABILITY
+
+Every effort has been made to ensure that this software is free of errors.  
+However, the software is supplied without any warranty as to the 
+performance or fitness of the program for any particular purpose.  All 
+risk relating to the results and performance of this program is assumed by
+the user.  CEPA shall not be liable for any damages resulting from the 
+use of this product.
+
+
+
