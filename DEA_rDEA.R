@@ -26,7 +26,7 @@ rendimientos <- rts.test(input,output,model="output",H0="constant",bw="cv", B=10
 rendimientos$pvalue
 
 
-# Eficiencias feo
+# Eficiencias
 e <- dea(XREF=input,YREF=output,input,output, RTS = "variable", model = "output")
 e
 summary(e)
