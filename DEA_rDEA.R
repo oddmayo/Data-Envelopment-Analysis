@@ -32,6 +32,9 @@ e
 summary(e)
 e$thetaOpt
 
+tabla_eficiencias <- data.frame(Departamento=data$dmu,"Eficiencia_técnica"=e$thetaOpt)
+tabla_eficiencias
+
 
 
 
