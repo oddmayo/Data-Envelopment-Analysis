@@ -2,8 +2,8 @@
 
 library(Benchmarking)
 library(readxl)
-
-
+library(directlabels)
+library(plotrix)
 
 # Cargar datos en su totalidad
 data <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/Base filtrada/Base esta si es.xlsx")
@@ -27,6 +27,20 @@ plot(input, output,col="blue",type = 'p',main = "Eficiencia",pch=19,panel.first 
 
 
 # plot frontera de producción
+dea.plot.frontier(input,output,
+                  xlab="# jueces",
+                  ylab="# casos resueltos",
+                  pch=20,
+                  lwd=1,
+                  lty=5,
+                  col="blue",
+                  cex.axis=1,
+                  xlim=range(0:200),
+                  main="Eficiencia técnica especialidad civil"
+                  )
 
-dea.plot.frontier(input,output)
+# texto para los puntos del plot
+spread.labels(input,output,
+              labels = data$dmu
+              )
 
