@@ -61,14 +61,35 @@ e$thetaOpt
 
 tabla <- data.frame(data,eficiencia=e$thetaOpt)
 
+tablalabel <- data.frame(data,eficiencia=e$thetaOpt)
+tablalabel$eficiencia[-which(tablalabel$eficiencia==1)]=0  
+
+tablalabel$color="firebrick4"
+
+tablalabel$eficiencia = as.factor(tablalabel$eficiencia)
+
+
+
+
+
 tabla2 <- tabla[which(tabla$eficiencia==1),] 
 tabla <- tabla[-which(tabla$eficiencia==1),]
+
+# ggplot 2
+
+efplot2 <- ggplot(data=tablalabel,aes(x=jueces_civil,y=sali_civil,label=dmu))+
+  geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="firebrick4",cex=1,linetype="F1")+
+  geom_point(aes(color=eficiencia,size=eficiencia))+
+  geom_label_repel(aes(label=dmu,color=eficiencia,force=8,arrow = arrow(length = unit(0.5, 'picas')))
+
+efplot2
+
 
 # ggplot 
 
 efplot <- ggplot(data=tabla,aes(x=jueces_civil,y=sali_civil,label=dmu))+
   geom_point(color="firebrick4")+
-  geom_label_repel(aes(label=dmu),size=2,color="dimgrey",force=8)+
+  geom_label_repel(aes(label=dmu),size=2,color="dimgrey",force=8,arrow = arrow(length = unit(0.01, 'npc')))+
   geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="firebrick4",cex=1,linetype="F1")+
   geom_point(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="slateblue4",cex=2.5)+
   geom_label_repel(data = tabla2,aes(label=dmu),size=3,color="white",fill="slateblue4",force=800)+
