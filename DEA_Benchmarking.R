@@ -68,21 +68,21 @@ tabla <- tabla[-which(tabla$eficiencia==1),]
 
 efplot <- ggplot(data=tabla,aes(x=jueces_civil,y=sali_civil,label=dmu))+
   geom_point(color="firebrick4")+
-  geom_label_repel(aes(label=dmu),size=3,color="dimgrey")+
-  geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="dimgrey",cex=1.25,linetype="longdash")+
+  geom_label_repel(aes(label=dmu),size=2,color="dimgrey",force=8)+
+  geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="firebrick4",cex=1,linetype="F1")+
   geom_point(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="slateblue4",cex=2.5)+
-  geom_label_repel(data = tabla2,aes(label=dmu),size=2.5,color="white",fill="slateblue4")+
+  geom_label_repel(data = tabla2,aes(label=dmu),size=3,color="white",fill="slateblue4",force=800)+
   labs(x="Número de jueces",y="Número de casos resueltos")+
   ggtitle("Eficiencia técnica especialidad civil")+
   theme(rect=element_rect(fill = "transparent"),plot.title = element_text(hjust = 0.5))
 
 efplot
+geom_label_repel
 
-
-ggsave("frontera_civil2.png",efplot,dpi = 720, bg="transparent")
+ggsave("frontera_civil2.png",efplot,dpi = 700, bg="transparent")
 
 getwd()
-ggplotly(a)
+ggplotly(efplot)
 
 
 
