@@ -2,7 +2,6 @@
 
 library(Benchmarking)
 library(readxl)
-library(directlabels)
 library(plotrix)
 library(plotly)
 library(ggplot2)
@@ -53,6 +52,7 @@ frontera <- dea.plot.frontier(input,output,
                   main="Eficiencia técnica especialidad civil"
                   )
 
+# Eficiencia de paquete rDEA 
 e <- dea(XREF=input,YREF=output,input,output, RTS = "variable", model = "output")
 e
 e$thetaOpt
@@ -67,11 +67,11 @@ tabla <- tabla[-which(tabla$eficiencia==1),]
 # ggplot 
 
 efplot <- ggplot(data=tabla,aes(x=jueces_civil,y=sali_civil,label=dmu))+
-  geom_point()+
-  geom_label_repel(aes(label=dmu),size=2.5,color="navy")+
-  geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="darkred",cex=1.25,linetype="longdash")+
-  geom_point(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="blue",cex=2.5)+
-  geom_label_repel(data = tabla2,aes(label=dmu),size=2.5,color="red",fill="green")+
+  geom_point(color="firebrick4")+
+  geom_label_repel(aes(label=dmu),size=3,color="dimgrey")+
+  geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="dimgrey",cex=1.25,linetype="longdash")+
+  geom_point(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="slateblue4",cex=2.5)+
+  geom_label_repel(data = tabla2,aes(label=dmu),size=2.5,color="white",fill="slateblue4")+
   labs(x="Número de jueces",y="Número de casos resueltos")+
   ggtitle("Eficiencia técnica especialidad civil")+
   theme(rect=element_rect(fill = "transparent"),plot.title = element_text(hjust = 0.5))
@@ -79,9 +79,9 @@ efplot <- ggplot(data=tabla,aes(x=jueces_civil,y=sali_civil,label=dmu))+
 efplot
 
 
-ggsave("frontera_civil.png",efplot,dpi = 720, bg="transparent")
+ggsave("frontera_civil2.png",efplot,dpi = 720, bg="transparent")
 
-
+getwd()
 ggplotly(a)
 
 
