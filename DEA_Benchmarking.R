@@ -64,11 +64,13 @@ tabla <- data.frame(data,eficiencia=e$thetaOpt)
 tablalabel <- data.frame(data,eficiencia=e$thetaOpt)
 tablalabel$eficiencia[-which(tablalabel$eficiencia==1)]=0  
 
-tablalabel$color="firebrick4"
+tablalabel$color=rep("firebrick4",length(tablalabel$dmu))
+tablalabel$color[which(tablalabel$eficiencia==1)]=rep("slateblue4",3)
+
 
 tablalabel$eficiencia = as.factor(tablalabel$eficiencia)
 
-
+myColors <- c("firebrick4", "slateblue4")
 
 
 
@@ -80,11 +82,15 @@ tabla <- tabla[-which(tabla$eficiencia==1),]
 efplot2 <- ggplot(data=tablalabel,aes(x=jueces_civil,y=sali_civil,label=dmu))+
   geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="firebrick4",cex=1,linetype="F1")+
   geom_point(aes(color=eficiencia,size=eficiencia))+
-  geom_label_repel(aes(label=dmu,color=eficiencia,force=8,arrow = arrow(length = unit(0.5, 'picas')))
+  scale_color_manual(values=myColors)+
+  theme(legend.position = "none",rect=element_rect(fill = "transparent"),plot.title = element_text(hjust = 0.5))+
+  ggtitle("Eficiencia técnica especialidad civil")+
+  labs(x="Número de jueces",y="Número de casos resueltos")+
+  geom_label_repel(aes(label=dmu,color=eficiencia),force=8,arrow = arrow(length = unit(0.5, 'picas')))
 
 efplot2
 
-
+ggsave("frontera_civil3.png",efplot2,dpi = 700, bg="transparent")
 # ggplot 
 
 efplot <- ggplot(data=tabla,aes(x=jueces_civil,y=sali_civil,label=dmu))+
