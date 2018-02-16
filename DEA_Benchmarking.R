@@ -113,21 +113,14 @@ ggsave("frontera_civil2.png",efplot,dpi = 700, bg="transparent")
 ggplotly(efplot)
 
 
-# NUEVAS MEDIDAS DE EFICIENCIA
 
-# Eficiencia de asignación (precios)
+# NUEVAS EFICIENCIAS
 
-# Eficiencia aditiva (por determinar)
-
-# Eficiencia de escala (tamaño)
-
-
-
-
-
-# DEA CON REDES DINÁMICAS (?)
-
-
-
+# Eficiencia de Escala
+library(rDEA)
+e_vrs <- dea(XREF = input,YREF = output,input,output,model = "output",RTS = "variable")
+e_crs <- dea(XREF = input,YREF = output,input,output,model = "output",RTS = "constant")
+efescala <- e_crs$thetaOpt/e_vrs$thetaOpt
+efescala
 
 
