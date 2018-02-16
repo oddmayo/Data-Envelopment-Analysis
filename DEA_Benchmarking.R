@@ -77,8 +77,8 @@ myColors <- c("firebrick4", "slateblue4")
 tabla2 <- tabla[which(tabla$eficiencia==1),] 
 tabla <- tabla[-which(tabla$eficiencia==1),]
 
-# ggplot 2
-
+# ggplot con un mejor trato para los labels
+# cortesía de Laura
 efplot2 <- ggplot(data=tablalabel,aes(x=jueces_civil,y=sali_civil,label=dmu))+
   geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="firebrick4",cex=1,linetype="F1")+
   geom_point(aes(color=eficiencia,size=eficiencia))+
@@ -91,7 +91,7 @@ efplot2 <- ggplot(data=tablalabel,aes(x=jueces_civil,y=sali_civil,label=dmu))+
 efplot2
 
 ggsave("frontera_civil3.png",efplot2,dpi = 700, bg="transparent")
-# ggplot 
+# ggplot teniendo que usar "force"
 
 efplot <- ggplot(data=tabla,aes(x=jueces_civil,y=sali_civil,label=dmu))+
   geom_point(color="firebrick4")+
