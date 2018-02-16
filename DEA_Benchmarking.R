@@ -123,4 +123,13 @@ e_crs <- dea(XREF = input,YREF = output,input,output,model = "output",RTS = "con
 efescala <- e_crs$thetaOpt/e_vrs$thetaOpt
 efescala
 
+tablaescala <- data.frame(Departamento=data$dmu,EficienciaEscala=efescala)
+tablaescala
+
+
+# Eficiencia de asignación 
+# Para esta es necesario tener costos/precios
+# Para el caso de los jueces podría servir su salario
+
+
 
