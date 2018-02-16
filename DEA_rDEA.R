@@ -26,7 +26,7 @@ rendimientos <- rts.test(input,output,model="output",H0="constant",bw="cv", B=10
 rendimientos$pvalue
 
 
-# Eficiencias
+# Eficiencia técnica
 e <- dea(XREF=input,YREF=output,input,output, RTS = "variable", model = "output")
 e
 summary(e)
@@ -34,6 +34,7 @@ e$thetaOpt
 
 tabla_eficiencias <- data.frame(Departamento=data$dmu,"Eficiencia_técnica"=e$thetaOpt)
 tabla_eficiencias
+
 
 
 
