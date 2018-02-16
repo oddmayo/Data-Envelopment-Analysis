@@ -104,12 +104,29 @@ efplot <- ggplot(data=tabla,aes(x=jueces_civil,y=sali_civil,label=dmu))+
   theme(rect=element_rect(fill = "transparent"),plot.title = element_text(hjust = 0.5))
 
 efplot
-geom_label_repel
 
+# Guardar .png 
+getwd()
 ggsave("frontera_civil2.png",efplot,dpi = 700, bg="transparent")
 
-getwd()
+# plotly: me crashea R 
 ggplotly(efplot)
+
+
+# NUEVAS MEDIDAS DE EFICIENCIA
+
+# Eficiencia de asignación (precios)
+
+# Eficiencia aditiva (por determinar)
+
+# Eficiencia de escala (tamaño)
+
+
+
+
+
+# DEA CON REDES DINÁMICAS (?)
+
 
 
 
