@@ -81,13 +81,14 @@ tabla <- tabla[-which(tabla$eficiencia==1),]
 # ggplot con un mejor trato para los labels
 # cortesía de Laura
 efplot2 <- ggplot(data=tablalabel,aes(x=jueces_civil,y=sali_civil,label=dmu))+
-  geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="firebrick4",cex=1,linetype="F1")+
-  geom_point(aes(color=eficiencia,size=eficiencia))+
-  scale_color_manual(values=myColors)+
-  theme(legend.position = "none",rect=element_rect(fill = "transparent"),plot.title = element_text(hjust = 0.5))+
-  ggtitle("Eficiencia técnica especialidad civil")+
-  labs(x="Número de jueces",y="Número de casos resueltos")+
-  geom_label_repel(aes(label=dmu,color=eficiencia),force=8,arrow = arrow(length = unit(0.5, 'picas')))
+                  geom_line(data=tabla2,aes(x=jueces_civil,y=sali_civil),color="firebrick4",cex=1,linetype="F1")+
+                  geom_point(aes(color=eficiencia,size=eficiencia))+
+                  scale_color_manual(values=myColors)+
+                  theme(legend.position = "none",rect=element_rect(fill = "transparent"),plot.title = element_text(hjust = 0.5))+
+                  ggtitle("Eficiencia técnica especialidad civil")+
+                  labs(x="Número de jueces",y="Número de casos resueltos")+
+                  geom_label_repel(aes(label=dmu,color=eficiencia),force=8,arrow = arrow(length = unit(0.5, 'picas'))
+                  )
 
 efplot2
 
@@ -144,5 +145,20 @@ tablasuperef
 # Arauca puede reducir su output de manera proporcional preservando su eficiencia
 # La eficiencia de Arauca es estable ante cambios proporcionales de los datos
 
+# Variables no discrecionarias
+# Variables fijas, sobre las que las unidades a evaluar no tienen control
+# pero que de alguna manera afectan su eficiencia
 
 
+
+# Holguras
+# La maximización de la segunda etapa puede verse como
+# detectar la mejor unidad de referencia
+
+# El DEA en 2 etapas tiene la desventaja de que los resultados varían con la unidades de medición
+ # peeero eso se corrije con la función que contiene el no arquimediano
+
+dosestapas <- dea(input,output,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
+dosestapas$slack
+dosestapas$sx
+dosestapas$sy
