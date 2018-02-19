@@ -53,6 +53,7 @@ frontera <- dea.plot.frontier(input,output,
                   )
 
 # Eficiencia de paquete rDEA 
+library(rDEA)
 e <- dea(XREF=input,YREF=output,input,output, RTS = "variable", model = "output")
 e
 e$thetaOpt
@@ -90,7 +91,7 @@ efplot2 <- ggplot(data=tablalabel,aes(x=jueces_civil,y=sali_civil,label=dmu))+
 
 efplot2
 
-ggsave("frontera_civil3.png",efplot2,dpi = 700, bg="transparent")
+ggsave("frontera_civil3.png",efplot2,dpi = 700, bg= "transparent")
 # ggplot teniendo que usar "force"
 
 efplot <- ggplot(data=tabla,aes(x=jueces_civil,y=sali_civil,label=dmu))+
@@ -110,7 +111,7 @@ getwd()
 ggsave("frontera_civil2.png",efplot,dpi = 700, bg="transparent")
 
 # plotly: me crashea R 
-ggplotly(efplot)
+ggplotly(efplot2)
 
 
 
@@ -130,6 +131,18 @@ tablaescala
 # Eficiencia de asignación 
 # Para esta es necesario tener costos/precios
 # Para el caso de los jueces podría servir su salario
+
+
+# Super eficiencia
+
+superef <- sdea(input,output,RTS = "vrs",ORIENTATION = "out")
+superef$eff
+tablasuperef <- data.frame(Departamento=data$dmu, superef$eff)
+tablasuperef
+# Arauca no tiene solución factible para super eficiencia
+# esto puesto que presenta rendimientos crecientes a escala
+# Arauca puede reducir su output de manera proporcional preservando su eficiencia
+# La eficiencia de Arauca es estable ante cambios proporcionales de los datos
 
 
 
