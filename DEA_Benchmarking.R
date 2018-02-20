@@ -175,7 +175,7 @@ boxplot(data$jueces_civil)
 
 scatterplot3d(data$sali_civil, data$jueces_civil)
 
-atipico <- outlier.ap(input,output,NDEL=10)
+atipico <- outlier.ap(input,output,NDEL=5)
 
 outlier.ap.plot(atipico$ratio)
 
@@ -186,7 +186,7 @@ x <- with(data, cbind(data$jueces_civil))
 y <- with(data, cbind(data$sali_civil))
 xy <- cbind(x,y)
 D <- det(t(xy)%*%xy)
-i <- c(5) # firms to remove
+i <- c(1) # firma o firmas a quitarse
 xyi = xy[-i,]
 Di <- det( t(xyi) %*% xyi )
 Ri <- Di/D
