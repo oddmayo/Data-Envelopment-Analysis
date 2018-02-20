@@ -37,13 +37,23 @@ tabla_eficiencias
 
 
 
+# Eficiencia sin Bogotá
+datos2 <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/BaseCivilSinBogota.xlsx")
+
+inputdata2 <- data.frame(datos2[3])
+outputdata2 <- data.frame(datos2[2])
+
+input2 <- as.matrix(inputdata2)
+output2 <- as.matrix(outputdata2)
 
 
+ef <- dea(XREF=input2,YREF=output2,input2,output2, RTS = "variable", model = "output")
+ef
 
+tabla2 <- data.frame(Departamento=datos2$dmu,Eficiencia_técnica=e$thetaOpt)
+tabla2
 
-
-
-
+# Bogotá indica no ser un dato atípico ante la poca variación entre 
 
 
 
