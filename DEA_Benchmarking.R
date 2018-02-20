@@ -157,8 +157,45 @@ tablasuperef
 
 # El DEA en 2 etapas tiene la desventaja de que los resultados varían con la unidades de medición
  # peeero eso se corrije con la función que contiene el no arquimediano
-
+library(Benchmarking)
 dosestapas <- dea(input,output,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
 dosestapas$slack
 dosestapas$sx
 dosestapas$sy
+
+
+# Desde el punto de vista de la teoría de la dualidad
+# DEA hace la mejor comparación posible entre DMUs
+
+# OUTLIERS
+
+boxplot(data$sali_civil)
+boxplot(data$jueces_civil)
+
+
+scatterplot3d(data$sali_civil, data$jueces_civil)
+
+atipico <- outlier.ap(input,output,NDEL=10)
+
+outlier.ap.plot(atipico$ratio)
+
+
+# Detección de datos atípicos con nube de datos
+
+x <- with(data, cbind(data$jueces_civil))
+y <- with(data, cbind(data$sali_civil))
+xy <- cbind(x,y)
+D <- det(t(xy)%*%xy)
+i <- c(5) # firms to remove
+xyi = xy[-i,]
+Di <- det( t(xyi) %*% xyi )
+Ri <- Di/D
+Ri
+
+# La firma 5 (Bogotá), evidencia ser un dato atípico
+
+# ANÁLISIS ESTADÍSTICO
+
+
+
+
