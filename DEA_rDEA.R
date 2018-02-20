@@ -53,7 +53,8 @@ ef
 tabla2 <- data.frame(Departamento=datos2$dmu,Eficiencia_técnica=e$thetaOpt)
 tabla2
 
-# Bogotá indica no ser un dato atípico ante la poca variación entre 
+# Bogotá indica no ser un dato atípico ante la poca variación entre resultados 
+
 
 
 
