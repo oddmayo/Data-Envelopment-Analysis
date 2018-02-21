@@ -186,15 +186,25 @@ x <- with(data, cbind(data$jueces_civil))
 y <- with(data, cbind(data$sali_civil))
 xy <- cbind(x,y)
 D <- det(t(xy)%*%xy)
-i <- c(1) # firma o firmas a quitarse
+i <- c(29) # firma o firmas a quitarse
 xyi = xy[-i,]
 Di <- det( t(xyi) %*% xyi )
 Ri <- Di/D
 Ri
 
-# La firma 5 (Bogotá), evidencia ser un dato atípico
+
+# La firma 5 (Bogotá) evidencia ser un dato atípico al tener
 
 # ANÁLISIS ESTADÍSTICO
+
+
+
+
+
+
+
+
+
 
 
 
