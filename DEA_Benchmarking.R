@@ -9,9 +9,10 @@ library(ggrepel)
 
 
 # Cargar datos en su totalidad
-data <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/Base filtrada/Base esta si es.xlsx")
+data1 <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/Base filtrada/Base esta si es.xlsx")
 # Cargar datos solo especialidad civil
 data <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/BaseCivil.xlsx")
+
 
 
 
@@ -196,8 +197,6 @@ Ri
 # La firma 5 (Bogotá) evidencia ser un dato atípico al tener
 
 # ANÁLISIS ESTADÍSTICO
-
-
 
 
 
