@@ -7,9 +7,9 @@ library(readxl)
 ######### DATOS ##########
 ##########################
 
-juzgcirc <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases de Rama Judicial - Cálculo DEA.xlsx",sheet = 1)
-juzgdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases de Rama Judicial - Cálculo DEA.xlsx",sheet = 4)
-tribdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases de Rama Judicial - Cálculo DEA.xlsx",sheet = 6)
+juzgcirc <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-Cálculo_DEA.xlsx",sheet = 1)
+juzgdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-Cálculo_DEA.xlsx",sheet = 4)
+tribdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-Cálculo_DEA.xlsx",sheet = 6)
 
 # lista de entradas y salidas
 listainputs  <- list(juzgcirc[5],juzgdist[5],tribdist[5])
