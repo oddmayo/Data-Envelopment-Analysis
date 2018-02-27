@@ -45,7 +45,10 @@ ef_juzg_circ <- data.frame(Circuito=juzgcirc$CIRCUITO,Eficiencia_técnica=eftjcir
 ef_juzg_dist <- data.frame(Distrito=juzgdist$DISTRITO,Eficiencia_técnica=eftjdist$thetaOpt)
 ef_trib_dist <- data.frame(Distrito=tribdist$DISTRITO,Eficiencia_técnica=efttdist$thetaOpt)
 
+detach(package:rDEA)
 library(Benchmarking)
+library(ggrepel)
+library(ggplot2)
 # GRáFICO frontera de producción (1 input y 1 output)
 
 
@@ -87,8 +90,13 @@ fronteraJC <- ggplot(data=tablalabelf1,
                                  )+
               theme(legend.position = "none",
                     rect=element_rect(fill = "transparent"),
-                    plot.title = element_text(hjust = 0.5)
+                    plot.title = element_text(hjust = 0.5),
+                    # para fondo blanco
+                    panel.grid=element_blank(),
+                    panel.background = element_blank(),
+                    axis.line = element_line(colour = "black")
                     )+
+              
               ggtitle("Eficiencia técnica proceso reparación directa por circuito (juzgados)"
                       )+
               labs(x="Número de jueces",
