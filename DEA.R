@@ -12,19 +12,32 @@ juzgdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución
 tribdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-Cálculo_DEA.xlsx",sheet = 6)
 
 # lista de entradas y salidas
-listainputs  <- list(juzgcirc[5],juzgdist[5],tribdist[5])
+listainputnj  <- list(juzgcirc[5],juzgdist[5],tribdist[5])
+listainputct <- list(juzgcirc[6],juzgdist[6],tribdist[6])
 listaoutputs <- list(juzgcirc[3],juzgdist[3],tribdist[3])
 
-# creación entradas automático
-dataflist <- lapply(listainputs, data.frame)
-nam <- "input_"
+# creación entradas para número de jueces
+dataflist <- lapply(listainputnj, data.frame)
+nam <- "inputnj_"
 val <- c(1:length(dataflist))
 for(i in 1:length(val)){
   assign(
     paste(nam, val, sep = "")[i], dataflist[[i]]
   ) }
 
-# creación salidas automático
+
+# creación entradas para carga de trabajo
+dataflist1.5 <- lapply(listainputct, data.frame)
+nam1.5 <- "inputct_"
+val1.5 <- c(1:length(dataflist1.5))
+for (i in 1:length(val1.5)) {
+  assign(
+    paste(nam1.5, val1.5, sep = "")[i], dataflist1.5[[i]]
+  )
+}
+
+
+# creación salidas
 dataflist2 <- lapply(listaoutputs, data.frame)
 nam2 <- "output_"
 val2 <- c(1:length(dataflist2))
@@ -37,9 +50,13 @@ detach(package:Benchmarking)
 library(rDEA)
 # eficiencia técnica
 
-eftjcirc <- dea(XREF=input_1,YREF=output_1,input_1,output_1,RTS = "variable",model = "output")
-eftjdist <- dea(XREF=input_2,YREF=output_2,input_2,output_2,RTS = "variable",model = "output")
-efttdist <- dea(XREF=input_3,YREF=output_3,input_3,output_3,RTS = "variable",model = "output")
+listainputs_1 <- data.frame(Número_jueces=inputnj_1,Carga_trabajo=inputct_1)
+listainputs_2 <- data.frame(Número_jueces=inputnj_2,Carga_trabajo=inputct_2)
+listainputs_3 <- data.frame(Número_jueces=inputnj_3,Carga_trabajo=inputct_3)
+
+eftjcirc <- dea(XREF=listainputs_1,YREF=output_1,X=listainputs_1,Y=output_1,RTS = "variable",model = "output")
+eftjdist <- dea(XREF=listainputs_2,YREF=output_2,X=listainputs_2,Y=output_2,RTS = "variable",model = "output")
+efttdist <- dea(XREF=listainputs_3,YREF=output_3,X=listainputs_3,Y=output_3,RTS = "variable",model = "output")
 
 ef_juzg_circ <- data.frame(Circuito=juzgcirc$CIRCUITO,Eficiencia_técnica=eftjcirc$thetaOpt)
 ef_juzg_dist <- data.frame(Distrito=juzgdist$DISTRITO,Eficiencia_técnica=eftjdist$thetaOpt)
@@ -74,6 +91,29 @@ detach(package:rDEA)
 library(Benchmarking)
 library(ggrepel)
 library(ggplot2)
+
+# Gráfico de curvas de indiferencia/isocuantas
+
+inputnj_1 <- as.matrix(inputnj_1)
+inputct_1 <- as.matrix(inputct_1)
+circuito <- juzgcirc[1]
+plot(inputnj_1,inputct_1)
+text(inputnj_1,inputct_1, labels = circuito)
+
+
+plot(juzgcirc$Jueces,juzgcirc$Carga)
+
+textxy(juzgcirc$Jueces,juzgcirc$Carga,juzgcirc$CIRCUITO)
+
+
+x <- c(1,2,3,4,5,6,7,8)
+y <- c(10,10,10,15,15,30,60,90)
+xy <- as.matrix(cbind(x,y))
+xyT <- t(xy)
+z <- as.matrix(sqrt(x*y))
+contour(xyT,z)
+
+
 # GRáFICO frontera de producción (1 input y 1 output)
 
 
