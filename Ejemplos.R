@@ -124,3 +124,7 @@ efplot
 # Guardar .png 
 getwd()
 ggsave("frontera_civil2.png",efplot,dpi = 700, bg="transparent")
+
+
+
+
