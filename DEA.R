@@ -45,6 +45,31 @@ ef_juzg_circ <- data.frame(Circuito=juzgcirc$CIRCUITO,Eficiencia_técnica=eftjcir
 ef_juzg_dist <- data.frame(Distrito=juzgdist$DISTRITO,Eficiencia_técnica=eftjdist$thetaOpt)
 ef_trib_dist <- data.frame(Distrito=tribdist$DISTRITO,Eficiencia_técnica=efttdist$thetaOpt)
 
+ef_juzg_circ
+ef_juzg_dist
+ef_trib_dist
+
+eftjcirc$lambda
+
+
+
+
+# exportar eficiencias
+library(xlsx)
+write.xlsx(ef_juzg_circ,"C:/Users/CamiloAndrés/Desktop/DNP/basejc.xlsx")
+write.xlsx(ef_juzg_dist,"C:/Users/CamiloAndrés/Desktop/DNP/basejd.xlsx")
+write.xlsx(ef_trib_dist,"C:/Users/CamiloAndrés/Desktop/DNP/basetd.xlsx")
+
+# peers units de benchmark
+detach(package:rDEA)
+library(Benchmarking)
+
+peerscir_j <- dea(input_1,output_1,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
+peerscir_j$lambda
+peersdis_j <- dea(input_2,output_2,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
+peersdis_t <- dea(input_3,output_3,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
+
+
 detach(package:rDEA)
 library(Benchmarking)
 library(ggrepel)
@@ -213,5 +238,10 @@ fronteraTD <- ggplot(data=tablalabelf3,
                                arrow = arrow(length = unit(0.5, 'picas'))
                               )
 fronteraTD
+
+
+
+
+
 
 
