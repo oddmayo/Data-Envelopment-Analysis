@@ -50,11 +50,12 @@ detach(package:Benchmarking)
 library(rDEA)
 # eficiencia técnica
 
-listainputs_1 <- data.frame(Número_jueces=inputnj_1,Carga_trabajo=inputct_1)
-listainputs_2 <- data.frame(Número_jueces=inputnj_2,Carga_trabajo=inputct_2)
-listainputs_3 <- data.frame(Número_jueces=inputnj_3,Carga_trabajo=inputct_3)
+X = juzgcirc[c('Jueces','Carga')]
+Y=  juzgcirc[c('Egresos')]
 
-eftjcirc <- dea(XREF=listainputs_1,YREF=output_1,X=listainputs_1,Y=output_1,RTS = "variable",model = "output")
+firms=1:38
+
+eftjcirc <- dea(XREF=X,YREF=Y,X=X[firms,],Y=Y[firms,],RTS = "variable",model = "input")
 eftjdist <- dea(XREF=listainputs_2,YREF=output_2,X=listainputs_2,Y=output_2,RTS = "variable",model = "output")
 efttdist <- dea(XREF=listainputs_3,YREF=output_3,X=listainputs_3,Y=output_3,RTS = "variable",model = "output")
 
@@ -81,6 +82,11 @@ write.xlsx(ef_trib_dist,"C:/Users/CamiloAndrés/Desktop/DNP/basetd.xlsx")
 detach(package:rDEA)
 library(Benchmarking)
 
+X <- data.frame(X)
+Y <- data.frame(Y)
+bench <- dea(X,Y,RTS="vrs",ORIENTATION = "out")
+
+
 peerscir_j <- dea(input_1,output_1,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
 peerscir_j$lambda
 peersdis_j <- dea(input_2,output_2,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
@@ -94,56 +100,42 @@ library(ggplot2)
 
 # Gráfico de curvas de indiferencia/isocuantas
 
-inputnj_1 <- as.matrix(inputnj_1)
-inputct_1 <- as.matrix(inputct_1)
-circuito <- juzgcirc[1]
-plot(inputnj_1,inputct_1)
-text(inputnj_1,inputct_1, labels = circuito)
-
 
 plot(juzgcirc$Jueces,juzgcirc$Carga)
 
 textxy(juzgcirc$Jueces,juzgcirc$Carga,juzgcirc$CIRCUITO)
 
 
-x <- c(1,2,3,4,5,6,7,8)
-y <- c(10,10,10,15,15,30,60,90)
-xy <- as.matrix(cbind(x,y))
-xyT <- t(xy)
-z <- as.matrix(sqrt(x*y))
-contour(xyT,z)
-
-
-# GRáFICO frontera de producción (1 input y 1 output)
+# GRáFICO frontera de producción (2 inputs para producir 1 output)
 
 
 # Gráfico para juzgados por circuito
 
 ###########
-input_1 <- as.matrix(input_1)
-output_1 <- as.matrix(output_1)
-plotef <- dea.plot.frontier(input_1,output_1,RTS = "vrs")
+inputnj_1 <- as.matrix(inputnj_1)
+inputct_1 <- as.matrix(inputct_1)
+plotef <- dea.plot.frontier(inputnj_1,inputct_1,RTS = "vrs")
 ###########
 
 tablaf1 <- data.frame(juzgcirc,eficiencia=eftjcirc$thetaOpt)
 myColors <- c("firebrick4", "slateblue4")
 tablalabelf1 <- data.frame(juzgcirc,eficiencia=eftjcirc$thetaOpt)
-tablalabelf1$eficiencia[-which(tablalabelf1$eficiencia==1)]=0  
+tablalabelf1$eficiencia[-which(tablalabelf1$eficiencia==1)]=0
 tablalabelf1$color=rep("firebrick4",length(tablalabelf1$CIRCUITO))
-tablalabelf1$color[which(tablalabelf1$eficiencia==1)]=rep("slateblue4",4)
+tablalabelf1$color[which(tablalabelf1$eficiencia==1)]=rep("slateblue4", 5)
 tablalabelf1$eficiencia = as.factor(tablalabelf1$eficiencia)
 
 tablaff1 <- tablaf1[which(tablaf1$eficiencia==1),] 
-
+tablaff1
 
 fronteraJC <- ggplot(data=tablalabelf1,
                      aes(x=Jueces,
-                         y=Egresos,
+                         y=Carga,
                          label=CIRCUITO)
                      )+
               geom_line(data=tablaff1,
                         aes(x=Jueces,
-                            y=Egresos),
+                            y=Carga),
                         color="firebrick4",
                         cex=1,
                         linetype="F1"
@@ -162,10 +154,10 @@ fronteraJC <- ggplot(data=tablalabelf1,
                     axis.line = element_line(colour = "black")
                     )+
               
-              ggtitle("Eficiencia técnica proceso reparación directa por circuito (juzgados)"
+              ggtitle("Eficiencia técnica proceso reparación directa entre circuito (juzgados)"
                       )+
               labs(x="Número de jueces",
-                   y="Número de casos resueltos"
+                   y="Carga de trabajo (Demanda+Inventario)"
                    )+
               geom_label_repel(aes(label=CIRCUITO,
                                    color=eficiencia),
@@ -187,7 +179,7 @@ tablaf2 <- data.frame(juzgdist,eficiencia=eftjdist$thetaOpt)
 tablalabelf2 <- data.frame(juzgdist,eficiencia=eftjdist$thetaOpt)
 tablalabelf2$eficiencia[-which(tablalabelf2$eficiencia==1)]=0  
 tablalabelf2$color=rep("firebrick4",length(tablalabelf2$DISTRITO))
-tablalabelf2$color[which(tablalabelf2$eficiencia==1)]=rep("slateblue4",3)
+tablalabelf2$color[which(tablalabelf2$eficiencia==1)]=rep("slateblue4",2)
 tablalabelf2$eficiencia = as.factor(tablalabelf2$eficiencia)
 
 tablaff2 <- tablaf2[which(tablaf2$eficiencia==1),] 
@@ -240,7 +232,7 @@ tablaf3 <- data.frame(tribdist,eficiencia=efttdist$thetaOpt)
 tablalabelf3 <- data.frame(tribdist,eficiencia=efttdist$thetaOpt)
 tablalabelf3$eficiencia[-which(tablalabelf3$eficiencia==1)]=0  
 tablalabelf3$color=rep("firebrick4",length(tablalabelf3$DISTRITO))
-tablalabelf3$color[which(tablalabelf3$eficiencia==1)]=rep("slateblue4",2)
+tablalabelf3$color[which(tablalabelf3$eficiencia==1)]=rep("slateblue4",3)
 tablalabelf3$eficiencia = as.factor(tablalabelf3$eficiencia)
 
 tablaff3 <- tablaf3[which(tablaf3$eficiencia==1),] 
@@ -248,12 +240,12 @@ tablaff3 <- tablaf3[which(tablaf3$eficiencia==1),]
 
 fronteraTD <- ggplot(data=tablalabelf3,
                      aes(x=Jueces,
-                         y=Egresos,
+                         y=Carga,
                          label=DISTRITO)
                     )+
               geom_line(data=tablaff3,
                         aes(x=Jueces,
-                            y=Egresos),
+                            y=Carga),
                         color="firebrick4",
                         cex=1,
                         linetype="F1"
@@ -267,10 +259,10 @@ fronteraTD <- ggplot(data=tablalabelf3,
                     rect=element_rect(fill = "transparent"),
                     plot.title = element_text(hjust = 0.5)
                     )+
-              ggtitle("Eficiencia técnica proceso reparación directa por distrito (tribunales)"
+              ggtitle("Eficiencia técnica proceso reparación directa entre distritos para tribunales"
                       )+
               labs(x="Número de jueces",
-                  y="Número de casos resueltos"
+                  y="Carga de trabajo (Demanda+Inventario)"
                   )+
               geom_label_repel(aes(label=DISTRITO,
                                    color=eficiencia),
