@@ -27,6 +27,7 @@ recomen1 <- data.frame(Circuito=juzgcirc$CIRCUITO,Bogotá=unidades1$L5,
                       Pasto=unidades1$L23,
                       Eficiencia_técnica=eftcircj,
                       "Aumento_recomendado_en_porcentaje"=(1-eftcircj)*100)
+recomen1
 #holguras
 dea1$sx
 dea1$sy
@@ -53,7 +54,7 @@ eft_distj <- data.frame(Circuito=juzgdist$DISTRITO,Eficiencia_técnica=eftdistj)
 eft_distj
 #unidades de referencia
 dea2$lambda
-#holguras
+#holguras (evidencia eficiencia fuerte o débil)
 dea2$sx
 dea2$sy
 
@@ -74,8 +75,16 @@ eftdistt
 eft_distt <- data.frame(Distrito=tribdist$DISTRITO,Eficiencia_técnica=eftdistt)
 eft_distt
 #unidades de referencia
-dea3$lambda
-#holguras
+unidades3 <- data.frame(dea3$lambda)
+#recomendación
+recomen3 <- data.frame(Distrito=tribdist$DISTRITO,Arauca=unidades3$L2,
+                       Cundinamarca=unidades3$L13,
+                       San_Andrés=unidades3$L22,
+                       Pamplona=unidades3$L22,
+                       Eficiencia_técnica=eftdistt,
+                       "Aumento_recomendado_en_porcentaje"=(1-eftdistt)*100)
+recomen3
+#holguras (evidencia eficiencia fuerte o débil)
 dea3$sx
 dea3$sy
 
@@ -88,15 +97,9 @@ write.xlsx(eft_distj,"C:/Users/CamiloAndrés/Desktop/DNP/basejd.xlsx")
 write.xlsx(eft_distt,"C:/Users/CamiloAndrés/Desktop/DNP/basetd.xlsx")
 
 
-
-
-library(ggrepel)
-library(ggplot2)
-
-
-
 # GRáFICO frontera de producción (2 inputs para producir 1 output)
-
+library(ggplot2)
+library(ggrepel)
 
 # Gráfico para juzgados por circuito
 
@@ -106,9 +109,9 @@ inputct_1 <- as.matrix(inputct_1)
 plotef <- dea.plot.frontier(inputnj_1,inputct_1,RTS = "vrs")
 ###########
 
-tablaf1 <- data.frame(juzgcirc,eficiencia=eftjcirc$thetaOpt)
+tablaf1 <- data.frame(juzgcirc,eficiencia=dea1$eff)
 myColors <- c("firebrick4", "slateblue4")
-tablalabelf1 <- data.frame(juzgcirc,eficiencia=eftjcirc$thetaOpt)
+tablalabelf1 <- data.frame(juzgcirc,eficiencia=dea1$eff)
 tablalabelf1$eficiencia[-which(tablalabelf1$eficiencia==1)]=0
 tablalabelf1$color=rep("firebrick4",length(tablalabelf1$CIRCUITO))
 tablalabelf1$color[which(tablalabelf1$eficiencia==1)]=rep("slateblue4", 5)
@@ -165,8 +168,8 @@ output_3 <- as.matrix(output_3)
 plotef3 <- dea.plot.frontier(input_3,output_3,RTS = "vrs")
 ###########
 
-tablaf3 <- data.frame(tribdist,eficiencia=efttdist$thetaOpt)
-tablalabelf3 <- data.frame(tribdist,eficiencia=efttdist$thetaOpt)
+tablaf3 <- data.frame(tribdist,eficiencia=dea3$eff)
+tablalabelf3 <- data.frame(tribdist,eficiencia=dea3$eff)
 tablalabelf3$eficiencia[-which(tablalabelf3$eficiencia==1)]=0  
 tablalabelf3$color=rep("firebrick4",length(tablalabelf3$DISTRITO))
 tablalabelf3$color[which(tablalabelf3$eficiencia==1)]=rep("slateblue4",3)
