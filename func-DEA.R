@@ -2,9 +2,9 @@ library(xlsx)
 library(readxl)
 library(lpSolve)
 
-##############################################################
+#############################################################
 ## ORIENTADO A LAS SALIDAS CON RETORNOS VARIABLES A ESCALA ##
-##############################################################
+#############################################################
 
 ############################################################
 # Para juzgados proceso reparación directa entre CIRCUITOS #
@@ -39,7 +39,7 @@ for (i in 1:N1) {  # bucle para cada DMU
   }
 }
 # Eficiencia técnica
-eficiencia1 <- data.frame("Circuito"=datacircj[1],"Eff-técnica"=1/effvrs1)
+eficiencia1 <- data.frame(datacircj[1],"Eff-técnica"=1/effvrs1)
 eficiencia1
 # Lambdas
 lambdas1
