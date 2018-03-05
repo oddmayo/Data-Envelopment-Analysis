@@ -1,92 +1,12 @@
-# Función DEA
-
-
-
-library(readxl)
-library(lpSolve)
-
-
-################################################################
-## ORIENTADO A LAS ENTRADAS CON RETTORNOS CONSTANTES A ESCALA ##
-################################################################
-
-data <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-Cálculo_DEA.xlsx",sheet = 1)
-
-inputs <- data.frame(data[c(5,6)])
-outputs <- data.frame(data[3])
-N <- dim(data)[1] # number of DMUs
-s <- dim(inputs)[2] # number of inputs
-m <- dim(outputs)[2] # number of outputs
-
-f.rhs <- c(rep(0,1,N),1) # RHS constraints
-f.dir <- c(rep("<=",1,N),"=") # Direction of constraints
-aux <- cbind(-1*inputs,outputs) # matrix of constraints coefficients in (6)
-
-
-for (i in 1:N) {
-  f.obj <- c(0*rep(1,s),as.numeric(outputs[i,])) #objective function coefficients
-  f.con <- rbind(aux,c(as.numeric(inputs[i,]),rep(0,1,m))) # add LHS of b^T_Z=1
-  results <- lp("max",as.numeric(f.obj),f.con,f.dir,f.rhs,scale=0,compute.sens = TRUE) # solve LPP
-  #multipliers <- results$solution #input and output weigths
-  #efficiency <- results$objval #efficiency score
-  #duals <- results$duals # shadow prices
-  if (i==1) {
-    weights <- results$solution
-    effcrs <- results$objval
-    lambdas <- results$duals[seq(1,N)]
-  } else {
-      weights <- rbind(weights,results$solution)
-      effcrs <- rbind(effcrs,results$objval)
-      lambdas <- rbind(lambdas,results$duals[seq(1,N)])
-    }
-  
-}
-
 library(xlsx)
 library(readxl)
 library(lpSolve)
-
-
-###############################################################
-## ORIENTADO A LAS SALIDAS CON RETTORNOS CONSTANTES A ESCALA ##
-###############################################################
-
-data <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-Cálculo_DEA.xlsx",sheet = 1)
-
-inputs <- data.frame(data[c(5,6)])
-outputs <- data.frame(data[3])
-N <- dim(data)[1] # number of DMUs
-s <- dim(inputs)[2] # number of inputs
-m <- dim(outputs)[2] # number of outputs
-
-
-f.rhs <- c(rep(0,1,N),1) # RHS constraints
-f.dir <- c(rep(">=",1,N),"=") # Direction of constraints
-aux <- cbind(inputs, -1*outputs) # matrix of constraints coefficients in
-
-for (i in 1:N) {
-  f.obj <- c(as.numeric(inputs[i,]),0*rep(0,1,m)) #objective function coefficients
-  f.con <- rbind(aux,c(rep(0,1,s),as.numeric(outputs[i,]))) # add LHS of c^T_z
-  results <- lp("min",as.numeric(f.obj),f.con,f.dir,f.rhs,scale=0,compute.sens = TRUE) # solve LPP
-  if (i==1) {
-    weights <- results$solution
-    effcrs <- results$objval
-    lambdas <- results$duals[seq(1,N)]
-  } else {
-    weights <- rbind(weights,results$solution)
-    effcrs <- rbind(effcrs,results$objval)
-    lambdas <- rbind(lambdas,results$duals[seq(1,N)])
-  }
-  
-}
-  
-
 
 ##############################################################
 ## ORIENTADO A LAS SALIDAS CON RETTORNOS VARIABLES A ESCALA ##
 ##############################################################
 
-# Para circuitos proceso reparación directa entre CIRCUITOS
+# Para juzgados proceso reparación directa entre CIRCUITOS
 
 datacircj <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-DEA.xlsx",sheet = 1)
 
@@ -123,3 +43,42 @@ eficiencia1
 lambdas1
 # Pesos
 pesos1
+
+
+# Para juzgados proceso reparación directa entre DISTRITOS (No interpretable/Solo comparación)
+
+datadistj <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-DEA.xlsx",sheet = 4)
+
+inputsdistj <- data.frame(datadistj[c(5,6)])
+outputsdistj <- data.frame(datadistj[3])
+N2 <- dim(datadistj)[1] # número unidades tomadoras de decisiones DMUs
+s2 <- dim(inputsdistj)[2] # número de entradas
+m2 <- dim(outputsdistj)[2] # número de salidas
+
+f.ldr2 <- c(rep(0,1,N2),1) # lado derecho de la restricción
+f.dir2 <- c(rep(">=",1,N2),"=") # dirección de la restricción
+mat2 <- cbind(inputsdistj, -1*outputsdistj,1,-1) # matriz primera restricción
+
+for (i in 1:N2) {  # bucle para cada DMU
+  f.obj2 <- c(as.numeric(inputsdistj[i,]),0*rep(0,1,m2),1,-1) # función objetivo
+  f.res2 <- rbind(mat2,c(rep(0,1,s2),as.numeric(outputsdistj[i,]),0,0)) # lado izquierdo segunda restricción
+  resultados2 <- lp("min",as.numeric(f.obj2),f.res2,f.dir2,f.ldr2,scale=0,compute.sens = TRUE) # función de lpSolver
+  multiplicadores2 <- resultados2$solution
+  u02 <- multiplicadores2[s2+m2+1]-multiplicadores2[s2+m2+2]
+  if (i==1) { # para los DMUs eficientes
+    pesos2 <- c(multiplicadores2[seq(1,s2+m2)],u02)
+    effvrs2 <- resultados2$objval
+    lambdas2 <- resultados2$duals[seq(1,N2)]
+  } else {    # para los DMUs ineficientes
+    pesos2 <- rbind(pesos2,c(multiplicadores2[seq(1,s2+m2)],u02))
+    effvrs2 <- rbind(effvrs2,resultados2$objval)
+    lambdas2 <- rbind(lambdas2,resultados2$duals[seq(1,N2)])
+  }
+}
+# Eficiencia técnica
+eficiencia2 <- data.frame(datadistj[1],"Eff-técnica"=1/effvrs2)
+eficiencia2
+# Lambdas
+lambdas2
+# Pesos
+pesos2
