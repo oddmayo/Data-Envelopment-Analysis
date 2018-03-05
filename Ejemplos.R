@@ -235,3 +235,15 @@ for (i in 1:N) {
   
 }
 
+###################
+# código útil
+# creación entradas para número de jueces
+dataflist <- lapply(listainputnj, data.frame)
+nam <- "inputnj_"
+val <- c(1:length(dataflist))
+for(i in 1:length(val)){
+  assign(
+    paste(nam, val, sep = "")[i], dataflist[[i]]
+  ) }
+
+
