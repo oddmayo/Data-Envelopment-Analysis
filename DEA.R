@@ -3,107 +3,96 @@
 ####################################
 
 library(readxl)
-##########################
-######### DATOS ##########
-##########################
+library(Benchmarking)
+# Juzgados proceso reparación directa entre circuitos
+juzgcirc <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-DEA.xlsx",sheet = 1)
 
-juzgcirc <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-Cálculo_DEA.xlsx",sheet = 1)
-juzgdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-Cálculo_DEA.xlsx",sheet = 4)
-tribdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-Cálculo_DEA.xlsx",sheet = 6)
+inputs1 <- data.frame(c(juzgcirc[5],juzgcirc[6]))
+inputs1 <- as.matrix(inputs1) # matriz necesaria para la función dea de Benchmarking
+outputs1 <- data.frame(juzgcirc[3])
+outputs1 <- as.matrix(outputs1)
+dea1 <- dea(inputs1,outputs1,RTS="vrs",ORIENTATION = "out",SLACK = TRUE, DUAL = TRUE)
+#eficiencia técnica
+eftcircj <- 1/dea1$eff 
+eftcircj
+eft_circj <- data.frame(Circuito=juzgcirc$CIRCUITO,Eficiencia_técnica=eftcircj)
+eft_circj
+#unidades de referencia
+unidades1 <- data.frame(dea1$lambda)
+#recomendación
+recomen1 <- data.frame(Circuito=juzgcirc$CIRCUITO,Bogotá=unidades1$L5,
+                      Leticia=unidades1$L16,
+                      Mocoa=unidades1$L19,
+                      Pamplona=unidades1$L22,
+                      Pasto=unidades1$L23,
+                      Eficiencia_técnica=eftcircj,
+                      "Aumento_recomendado_en_porcentaje"=(1-eftcircj)*100)
+#holguras
+dea1$sx
+dea1$sy
+#supereficiencia (Para detectar valores atípicos)
+superdea1 <- sdea(inputs1,outputs1,RTS = "vrs",ORIENTATION = "out")
+1/superdea1$eff
+superef1 <- data.frame(Circuito=juzgcirc$CIRCUITO,Super_eficiencia=1/superdea1$eff)
+superef1
 
-# lista de entradas y salidas
-listainputnj  <- list(juzgcirc[5],juzgdist[5],tribdist[5])
-listainputct <- list(juzgcirc[6],juzgdist[6],tribdist[6])
-listaoutputs <- list(juzgcirc[3],juzgdist[3],tribdist[3])
-
-# creación entradas para número de jueces
-dataflist <- lapply(listainputnj, data.frame)
-nam <- "inputnj_"
-val <- c(1:length(dataflist))
-for(i in 1:length(val)){
-  assign(
-    paste(nam, val, sep = "")[i], dataflist[[i]]
-  ) }
 
 
-# creación entradas para carga de trabajo
-dataflist1.5 <- lapply(listainputct, data.frame)
-nam1.5 <- "inputct_"
-val1.5 <- c(1:length(dataflist1.5))
-for (i in 1:length(val1.5)) {
-  assign(
-    paste(nam1.5, val1.5, sep = "")[i], dataflist1.5[[i]]
-  )
-}
+# Juzgados proceso reparación directa entre distritos
+juzgdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-DEA.xlsx",sheet = 4)
+
+inputs2 <- data.frame(c(juzgdist[5],juzgdist[6]))
+inputs2 <- as.matrix(inputs2) # matriz necesaria para la función dea de Benchmarking
+outputs2 <- data.frame(juzgdist[3])
+outputs2 <- as.matrix(outputs2)
+dea2 <- dea(inputs2,outputs2,RTS="vrs",ORIENTATION = "out",SLACK = TRUE, DUAL = TRUE)
+#eficiencia técnica
+eftdistj <- 1/dea2$eff 
+eftdistj
+eft_distj <- data.frame(Circuito=juzgdist$DISTRITO,Eficiencia_técnica=eftdistj)
+eft_distj
+#unidades de referencia
+dea2$lambda
+#holguras
+dea2$sx
+dea2$sy
 
 
-# creación salidas
-dataflist2 <- lapply(listaoutputs, data.frame)
-nam2 <- "output_"
-val2 <- c(1:length(dataflist2))
-for(i in 1:length(val2)){
-  assign(
-    paste(nam2, val2, sep = "")[i], dataflist2[[i]]
-  ) }
 
-detach(package:Benchmarking)
-library(rDEA)
-# eficiencia técnica
 
-X = juzgcirc[c('Jueces','Carga')]
-Y=  juzgcirc[c('Egresos')]
+# Tribunales proceso reparación directa entre distritos
+tribdist <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-DEA.xlsx",sheet = 6)
 
-firms=1:38
-
-eftjcirc <- dea(XREF=X,YREF=Y,X=X[firms,],Y=Y[firms,],RTS = "variable",model = "input")
-eftjdist <- dea(XREF=listainputs_2,YREF=output_2,X=listainputs_2,Y=output_2,RTS = "variable",model = "output")
-efttdist <- dea(XREF=listainputs_3,YREF=output_3,X=listainputs_3,Y=output_3,RTS = "variable",model = "output")
-
-ef_juzg_circ <- data.frame(Circuito=juzgcirc$CIRCUITO,Eficiencia_técnica=eftjcirc$thetaOpt)
-ef_juzg_dist <- data.frame(Distrito=juzgdist$DISTRITO,Eficiencia_técnica=eftjdist$thetaOpt)
-ef_trib_dist <- data.frame(Distrito=tribdist$DISTRITO,Eficiencia_técnica=efttdist$thetaOpt)
-
-ef_juzg_circ
-ef_juzg_dist
-ef_trib_dist
-
-eftjcirc$lambda
-
+inputs3 <- data.frame(c(tribdist[5],tribdist[6]))
+inputs3 <- as.matrix(inputs3) # matriz necesaria para la función dea de Benchmarking
+outputs3 <- data.frame(tribdist[3])
+outputs3 <- as.matrix(outputs3)
+dea3 <- dea(inputs3,outputs3,RTS="vrs",ORIENTATION = "out",SLACK = TRUE, DUAL = TRUE)
+#eficiencia técnica
+eftdistt <- 1/dea3$eff 
+eftdistt
+eft_distt <- data.frame(Distrito=tribdist$DISTRITO,Eficiencia_técnica=eftdistt)
+eft_distt
+#unidades de referencia
+dea3$lambda
+#holguras
+dea3$sx
+dea3$sy
 
 
 
 # exportar eficiencias
 library(xlsx)
-write.xlsx(ef_juzg_circ,"C:/Users/CamiloAndrés/Desktop/DNP/basejc.xlsx")
-write.xlsx(ef_juzg_dist,"C:/Users/CamiloAndrés/Desktop/DNP/basejd.xlsx")
-write.xlsx(ef_trib_dist,"C:/Users/CamiloAndrés/Desktop/DNP/basetd.xlsx")
-
-# peers units de benchmark
-detach(package:rDEA)
-library(Benchmarking)
-
-X <- data.frame(X)
-Y <- data.frame(Y)
-bench <- dea(X,Y,RTS="vrs",ORIENTATION = "out")
+write.xlsx(eft_circj,"C:/Users/CamiloAndrés/Desktop/DNP/basejc.xlsx")
+write.xlsx(eft_distj,"C:/Users/CamiloAndrés/Desktop/DNP/basejd.xlsx")
+write.xlsx(eft_distt,"C:/Users/CamiloAndrés/Desktop/DNP/basetd.xlsx")
 
 
-peerscir_j <- dea(input_1,output_1,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
-peerscir_j$lambda
-peersdis_j <- dea(input_2,output_2,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
-peersdis_t <- dea(input_3,output_3,RTS="vrs",ORIENTATION = "out",SLACK = TRUE)
 
 
-detach(package:rDEA)
-library(Benchmarking)
 library(ggrepel)
 library(ggplot2)
 
-# Gráfico de curvas de indiferencia/isocuantas
-
-
-plot(juzgcirc$Jueces,juzgcirc$Carga)
-
-textxy(juzgcirc$Jueces,juzgcirc$Carga,juzgcirc$CIRCUITO)
 
 
 # GRáFICO frontera de producción (2 inputs para producir 1 output)
@@ -165,58 +154,6 @@ fronteraJC <- ggplot(data=tablalabelf1,
                                arrow = arrow(length = unit(0.5, 'picas'))
                               )
 fronteraJC
-
-
-# Gráfico para juzgados por distrito
-
-###########
-input_2 <- as.matrix(input_2)
-output_2 <- as.matrix(output_2)
-plotef2 <- dea.plot.frontier(input_2,output_2,RTS = "vrs")
-###########
-
-tablaf2 <- data.frame(juzgdist,eficiencia=eftjdist$thetaOpt)
-tablalabelf2 <- data.frame(juzgdist,eficiencia=eftjdist$thetaOpt)
-tablalabelf2$eficiencia[-which(tablalabelf2$eficiencia==1)]=0  
-tablalabelf2$color=rep("firebrick4",length(tablalabelf2$DISTRITO))
-tablalabelf2$color[which(tablalabelf2$eficiencia==1)]=rep("slateblue4",2)
-tablalabelf2$eficiencia = as.factor(tablalabelf2$eficiencia)
-
-tablaff2 <- tablaf2[which(tablaf2$eficiencia==1),] 
-
-
-fronteraJD <- ggplot(data=tablalabelf2,
-                    aes(x=Jueces,
-                        y=Egresos,
-                        label=DISTRITO)
-                    )+
-              geom_line(data=tablaff2,
-                        aes(x=Jueces,
-                            y=Egresos),
-                        color="firebrick4",
-                        cex=1,
-                        linetype="F1"
-                        )+
-              geom_point(aes(color=eficiencia,
-                             size=eficiencia)
-                         )+
-              scale_color_manual(values=myColors
-                                 )+
-              theme(legend.position = "none",
-                    rect=element_rect(fill = "transparent"),
-                    plot.title = element_text(hjust = 0.5)
-                    )+
-              ggtitle("Eficiencia técnica proceso reparación directa por distrito (juzgados)"
-                      )+
-              labs(x="Número de jueces",
-                   y="Número de casos resueltos"
-                   )+
-              geom_label_repel(aes(label=DISTRITO,
-                                   color=eficiencia),
-                               force=8,
-                               arrow = arrow(length = unit(0.5, 'picas'))
-                              )
-fronteraJD
 
 
 
