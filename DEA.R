@@ -28,15 +28,22 @@ recomen1 <- data.frame(Circuito=juzgcirc$CIRCUITO,Bogotá=unidades1$L5,
                       Eficiencia_técnica=eftcircj,
                       "Aumento_recomendado_en_porcentaje"=(1-eftcircj)*100)
 recomen1
-#holguras
+#holguras (eficiencia fuerte o débil)
 dea1$sx
 dea1$sy
-#supereficiencia (Para detectar valores atípicos)
+
+#pesos (sensibilidad/impacto sobre la eficiencia)
+dea1$ux
+dea1$vy
+
+
+#supereficiencia (Para detectar valores atípico/Diferenciar unidades frontera)
 superdea1 <- sdea(inputs1,outputs1,RTS = "vrs",ORIENTATION = "out")
 1/superdea1$eff
 superef1 <- data.frame(Circuito=juzgcirc$CIRCUITO,Super_eficiencia=1/superdea1$eff)
 superef1
 
+superdea1$lambda
 
 
 # Juzgados proceso reparación directa entre distritos
@@ -211,7 +218,17 @@ fronteraTD <- ggplot(data=tablalabelf3,
                               )
 fronteraTD
 
-
+# Datos atípicos
+x <- with(juzgcirc, cbind(juzgcirc$Jueces))
+y <- with(juzgcirc, cbind(juzgcirc$Carga))
+w <- with(juzgcirc, cbind(juzgcirc$Egresos))
+xyw <- cbind(x,y,w)
+D <- det(t(xyw)%*%xyw)
+i <- c(1) # DMUs a quitarse
+xywi = xyw[-i,]
+Di <- det( t(xywi) %*% xywi )
+Ri <- Di/D
+Ri # Valores pequeños de Ri me indican presencia de datos atípico
 
 
 
