@@ -3,10 +3,12 @@ library(readxl)
 library(lpSolve)
 
 ##############################################################
-## ORIENTADO A LAS SALIDAS CON RETTORNOS VARIABLES A ESCALA ##
+## ORIENTADO A LAS SALIDAS CON RETORNOS VARIABLES A ESCALA ##
 ##############################################################
 
-# Para juzgados proceso reparación directa entre CIRCUITOS
+############################################################
+# Para juzgados proceso reparación directa entre CIRCUITOS #
+############################################################
 
 datacircj <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-DEA.xlsx",sheet = 1)
 
@@ -44,8 +46,9 @@ lambdas1
 # Pesos
 pesos1
 
-
-# Para juzgados proceso reparación directa entre DISTRITOS (No interpretable/Solo comparación)
+################################################################################################
+# Para juzgados proceso reparación directa entre DISTRITOS (No interpretable/Solo comparación) #
+################################################################################################
 
 datadistj <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-DEA.xlsx",sheet = 4)
 
@@ -82,3 +85,44 @@ eficiencia2
 lambdas2
 # Pesos
 pesos2
+
+
+##############################################################
+# Para tribunales proceso reparación directa entre DISTRITOS #
+##############################################################
+
+datadistrib <- read_excel("C:/Users/CamiloAndrés/Desktop/DNP/Proyectos/Distribución de la oferta judicial/DEA en R/Repo/Data-Envelopment-Analysis/Bases_de_Rama_Judicial-DEA.xlsx",sheet = 6)
+
+inputsdistrib <- data.frame(datadistrib[c(5,6)])
+outputsdistrib <- data.frame(datadistrib[3])
+N3 <- dim(datadistrib)[1] # número unidades tomadoras de decisiones DMUs
+s3 <- dim(inputsdistrib)[2] # número de entradas
+m3 <- dim(outputsdistrib)[2] # número de salidas
+
+f.ldr3 <- c(rep(0,1,N3),1) # lado derecho de la restricción
+f.dir3 <- c(rep(">=",1,N3),"=") # dirección de la restricción
+mat3 <- cbind(inputsdistrib, -1*outputsdistrib,1,-1) # matriz primera restricción
+
+for (i in 1:N3) {  # bucle para cada DMU
+  f.obj3 <- c(as.numeric(inputsdistrib[i,]),0*rep(0,1,m3),1,-1) # función objetivo
+  f.res3 <- rbind(mat3,c(rep(0,1,s3),as.numeric(outputsdistrib[i,]),0,0)) # lado izquierdo segunda restricción
+  resultados3 <- lp("min",as.numeric(f.obj3),f.res3,f.dir3,f.ldr3,scale=0,compute.sens = TRUE) # función de lpSolver
+  multiplicadores3 <- resultados3$solution
+  u03 <- multiplicadores3[s3+m3+1]-multiplicadores3[s3+m3+2]
+  if (i==1) { # para los DMUs eficientes
+    pesos3 <- c(multiplicadores3[seq(1,s3+m3)],u03)
+    effvrs3 <- resultados3$objval
+    lambdas3 <- resultados3$duals[seq(1,N3)]
+  } else {    # para los DMUs ineficientes
+    pesos3 <- rbind(pesos3,c(multiplicadores3[seq(1,s3+m3)],u03))
+    effvrs3 <- rbind(effvrs3,resultados3$objval)
+    lambdas3 <- rbind(lambdas3,resultados3$duals[seq(1,N3)])
+  }
+}
+# Eficiencia técnica
+eficiencia3 <- data.frame(datadistrib[1],"Eff-técnica"=1/effvrs3)
+eficiencia3
+# Lambdas
+lambdas3
+# Pesos
+pesos3
