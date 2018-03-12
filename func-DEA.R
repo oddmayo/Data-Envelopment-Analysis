@@ -46,6 +46,8 @@ lambdas1
 # Pesos
 pesos1
 
+
+
 ################################################################################################
 # Para juzgados proceso reparación directa entre DISTRITOS (No interpretable/Solo comparación) #
 ################################################################################################
