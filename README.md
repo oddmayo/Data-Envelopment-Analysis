@@ -7,12 +7,12 @@ This work consist in a proposal for the measurement of the efficiency of judicia
 
 ![image](https://github.com/FoxHound112263/Data-Envelopment-Analysis/blob/master/output/frontier.PNG)
 
-## It must a convexity and a inefficiency condition
+## It must follow a convexity and a inefficiency condition
 
 ![image](https://github.com/FoxHound112263/Data-Envelopment-Analysis/blob/master/output/convexity.PNG)
 ![image](https://github.com/FoxHound112263/Data-Envelopment-Analysis/blob/master/output/inneficiency.PNG)
 
-## Variable Returns to Scale was chosen according to hipotesys testing
+## Variable Returns to Scale was chosen according to hypothesis testing
 
 ![image](https://github.com/FoxHound112263/Data-Envelopment-Analysis/blob/master/output/model.PNG)
 
